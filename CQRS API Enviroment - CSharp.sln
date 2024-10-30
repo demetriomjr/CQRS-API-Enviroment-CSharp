@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Databa
 		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCenter", "SecurityCenter\SecurityCenter.csproj", "{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

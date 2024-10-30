@@ -25,25 +25,25 @@ app.UseAuthorization();
 app.Run();
 
 //AUTH ROUTES
-app.MapPost("/token/authorize", (User user) =>
+app.MapPost("/token/authorize", (UserCredentials credentials) =>
 {
-    if (user is null)
+    if (credentials is null)
         return Results.BadRequest();
 
-    if (user is null)
+    if (credentials is null)
         return Results.Unauthorized();
 
-    return Results.Ok(GenerateToken(user));
+    return Results.Ok(GenerateToken(credentials));
 });
 
-app.MapGet("/token/refresh", (string token) =>
+app.MapGet("/token/refresh", (string refresToken) =>
 {
-    var jsonToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+    var jsonToken = new JwtSecurityTokenHandler().ReadToken(refresToken) as JwtSecurityToken;
 
     if( jsonToken is null)
         return Results.Unauthorized();
 
-    return Results.Ok(RefreshToken(token));
+    return Results.Ok(RefreshToken(refresToken));
 });
 
 //PUBLIC ROUTES
@@ -84,8 +84,10 @@ JwtSecurityToken CreateToken(IEnumerable<Claim> claims, JWTSettings jwtSettings,
     );
 }
 
-(string token, string refresh_token) GenerateToken(User user)
+(string token, string refresh_token) GenerateToken(UserCredentials credentials)
 {
+    var user = new User();
+
     var claims = new[]
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Username),
@@ -110,10 +112,10 @@ JwtSecurityToken CreateToken(IEnumerable<Claim> claims, JWTSettings jwtSettings,
         new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString())
     };
     var token = CreateToken(claims, jwtSettings!, TOKEN_DURATION);
-    var refresh_t = CreateToken(claims, jwtSettings!, REFRESH_TOKEN_DURATION);
+    var newRefreshToken = CreateToken(claims, jwtSettings!, REFRESH_TOKEN_DURATION);
 
     return (
             new JwtSecurityTokenHandler().WriteToken(token),
-            new JwtSecurityTokenHandler().WriteToken(refresh_t)
+            new JwtSecurityTokenHandler().WriteToken(newRefreshToken)
            );
 }
