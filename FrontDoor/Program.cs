@@ -34,6 +34,9 @@ app.MapGet("/token/authorize", ([FromQuery] string username, [FromQuery] string 
 
 app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
 {
+    if (refresToken is null)
+        return Results.BadRequest("No Refresh Token was passed as parameter");
+
     var jsonToken = new JwtSecurityTokenHandler().ReadToken(refresToken) as JwtSecurityToken;
 
     if (jsonToken is null || jsonToken.ValidTo <= DateTime.UtcNow)
