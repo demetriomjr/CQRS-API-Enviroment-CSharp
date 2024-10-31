@@ -1,5 +1,4 @@
-﻿
-using System.Runtime;
+﻿using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
@@ -24,10 +23,14 @@ app.UseAuthorization();
 app.Run();
 
 //AUTH ROUTES
-app.MapPost("/token/authorize", (UserCredentials credentials) =>
+app.MapGet("/token/authorize", ([FromQuery] string username, [FromQuery] string password) =>
 {
-    if (credentials is null)
-        return Results.BadRequest();
+    if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        return Results.BadRequest("Username and Password are required to validate.");
+    
+    UserCredentials credentials = new(username, password);
+
+    //validation function here;
 
     if (credentials is null)
         return Results.Unauthorized();
@@ -35,7 +38,7 @@ app.MapPost("/token/authorize", (UserCredentials credentials) =>
     return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, credentials));
 });
 
-app.MapGet("/token/refresh", (string refresToken) =>
+app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
 {
     var jsonToken = new JwtSecurityTokenHandler().ReadToken(refresToken) as JwtSecurityToken;
 
