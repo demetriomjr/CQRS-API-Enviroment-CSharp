@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Databa
 		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCenter", "SecurityCenter\SecurityCenter.csproj", "{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityHQ", "SecurityCenter\SecurityHQ.csproj", "{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

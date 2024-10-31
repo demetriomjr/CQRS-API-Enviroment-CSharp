@@ -1,6 +1,5 @@
-﻿int TOKEN_DURATION = 30;
-int REFRESH_TOKEN_DURATION = 60*12;
-
+﻿
+using System.Runtime;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
@@ -33,7 +32,7 @@ app.MapPost("/token/authorize", (UserCredentials credentials) =>
     if (credentials is null)
         return Results.Unauthorized();
 
-    return Results.Ok(GenerateToken(credentials));
+    return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, credentials));
 });
 
 app.MapGet("/token/refresh", (string refresToken) =>
@@ -43,7 +42,7 @@ app.MapGet("/token/refresh", (string refresToken) =>
     if( jsonToken is null)
         return Results.Unauthorized();
 
-    return Results.Ok(RefreshToken(refresToken));
+    return Results.Ok(SecurityCenter.Tokens.RefreshToken(jwtSettings!, refresToken));
 });
 
 //PUBLIC ROUTES
@@ -69,49 +68,3 @@ app.MapDelete("/{*path}", (string? path) =>
 {
     return Results.Ok();
 }).RequireAuthorization();
-
-JwtSecurityToken CreateToken(UserCredentials user, JwtSettings jwtSettings, int duration)
-{
-    var user = new User();
-    var userCode = Guid.NewGuid().ToString();
-
-    var claims = new[]
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-        new Claim(JwtRegisteredClaimNames.Jti, userCode)
-    };
-    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.secretKey));
-    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-    return new JwtSecurityToken(
-        issuer: jwtSettings.issuer,
-        audience: jwtSettings.audience,
-        claims: claims,
-        expires: DateTime.Now.AddMinutes(duration),
-        signingCredentials: creds
-    );
-}
-
-(string token, string refresh_token) GenerateToken(UserCredentials credentials)
-{
-    
-    var token = CreateToken(credentials, jwtSettings!, TOKEN_DURATION);
-    var refresh_t = CreateToken(credentials, jwtSettings!, REFRESH_TOKEN_DURATION);
-
-    return (
-            new JwtSecurityTokenHandler().WriteToken(token),
-            new JwtSecurityTokenHandler().WriteToken(refresh_t)
-           );
-}
-
-(string token, string refresh_token) RefreshToken(string refreshToken)
-{
-    var credentials = new UserCredentials("", "");
-    var token = CreateToken(credentials, jwtSettings!, TOKEN_DURATION);
-    var newRefreshToken = CreateToken(credentials, jwtSettings!, REFRESH_TOKEN_DURATION);
-
-    return (
-            new JwtSecurityTokenHandler().WriteToken(token),
-            new JwtSecurityTokenHandler().WriteToken(newRefreshToken)
-           );
-}

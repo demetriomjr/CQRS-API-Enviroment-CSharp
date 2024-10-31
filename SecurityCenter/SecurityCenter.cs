@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SecurityCenter
+﻿namespace SecurityHQ
 {
     public static class SecurityCenter
     {
-
+        public static TokenManagement Tokens = new();
     }
 }
