@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -27,22 +25,18 @@ app.MapGet("/token/authorize", ([FromQuery] string username, [FromQuery] string 
 {
     if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Username and Password are required to validate.");
-    
-    UserCredentials credentials = new(username, password);
 
-    //validation function here;
+    if (SecurityCenter.Users.Validate(username, password, out Guid userId))
+        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, userId));
 
-    if (credentials is null)
-        return Results.Unauthorized();
-
-    return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, credentials));
+    return Results.Unauthorized();
 });
 
 app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
 {
     var jsonToken = new JwtSecurityTokenHandler().ReadToken(refresToken) as JwtSecurityToken;
 
-    if( jsonToken is null)
+    if (jsonToken is null || jsonToken.ValidTo <= DateTime.UtcNow)
         return Results.Unauthorized();
 
     return Results.Ok(SecurityCenter.Tokens.RefreshToken(jwtSettings!, refresToken));

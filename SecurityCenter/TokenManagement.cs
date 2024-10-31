@@ -5,9 +5,11 @@
         private static readonly int TOKEN_DURATION = 30;
         private static readonly int REFRESH_TOKEN_DURATION = 60 * 12;
 
-        public TokenResponse GenerateToken(JwtSettings settings, UserCredentials credentials)
+        public TokenResponse GenerateToken(JwtSettings settings, Guid userId)
         {
             var userCode = Guid.NewGuid().ToString().Replace("-", "");
+
+            //function to set userId with userCode on Redis
 
             var token = CreateToken(userCode, settings!, TOKEN_DURATION);
             var refreshToken = CreateToken(userCode, settings!, REFRESH_TOKEN_DURATION);
