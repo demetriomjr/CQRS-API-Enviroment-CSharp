@@ -4,7 +4,7 @@ int REFRESH_TOKEN_DURATION = 60*12;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JWTSettings>();
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -13,9 +13,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings?.Issuer,
-            ValidAudience = jwtSettings?.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.SecretKey))
+            ValidIssuer = jwtSettings?.issuer,
+            ValidAudience = jwtSettings?.audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.secretKey))
         };
     });
 
@@ -70,14 +70,22 @@ app.MapDelete("/{*path}", (string? path) =>
     return Results.Ok();
 }).RequireAuthorization();
 
-JwtSecurityToken CreateToken(IEnumerable<Claim> claims, JWTSettings jwtSettings, int duration)
+JwtSecurityToken CreateToken(UserCredentials user, JwtSettings jwtSettings, int duration)
 {
-    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
+    var user = new User();
+    var userCode = Guid.NewGuid().ToString();
+
+    var claims = new[]
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+        new Claim(JwtRegisteredClaimNames.Jti, userCode)
+    };
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.secretKey));
     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
     return new JwtSecurityToken(
-        issuer: jwtSettings.Issuer,
-        audience: jwtSettings.Audience,
+        issuer: jwtSettings.issuer,
+        audience: jwtSettings.audience,
         claims: claims,
         expires: DateTime.Now.AddMinutes(duration),
         signingCredentials: creds
@@ -86,15 +94,9 @@ JwtSecurityToken CreateToken(IEnumerable<Claim> claims, JWTSettings jwtSettings,
 
 (string token, string refresh_token) GenerateToken(UserCredentials credentials)
 {
-    var user = new User();
-
-    var claims = new[]
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-        new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString())
-    };
-    var token = CreateToken(claims, jwtSettings!, TOKEN_DURATION);
-    var refresh_t = CreateToken(claims, jwtSettings!, REFRESH_TOKEN_DURATION);
+    
+    var token = CreateToken(credentials, jwtSettings!, TOKEN_DURATION);
+    var refresh_t = CreateToken(credentials, jwtSettings!, REFRESH_TOKEN_DURATION);
 
     return (
             new JwtSecurityTokenHandler().WriteToken(token),
@@ -104,15 +106,9 @@ JwtSecurityToken CreateToken(IEnumerable<Claim> claims, JWTSettings jwtSettings,
 
 (string token, string refresh_token) RefreshToken(string refreshToken)
 {
-    var user = new User();//replace
-
-    var claims = new[]
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-        new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString())
-    };
-    var token = CreateToken(claims, jwtSettings!, TOKEN_DURATION);
-    var newRefreshToken = CreateToken(claims, jwtSettings!, REFRESH_TOKEN_DURATION);
+    var credentials = new UserCredentials("", "");
+    var token = CreateToken(credentials, jwtSettings!, TOKEN_DURATION);
+    var newRefreshToken = CreateToken(credentials, jwtSettings!, REFRESH_TOKEN_DURATION);
 
     return (
             new JwtSecurityTokenHandler().WriteToken(token),

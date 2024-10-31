@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35417.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontDoor", "FrontDoor\FrontDoor.csproj", "{0D5B047C-610F-4255-88C4-9D1973A75E76}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1} = {7872433A-FF20-4BBE-BD05-33DAF4E68EF1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}"
 EndProject
