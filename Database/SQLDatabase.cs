@@ -1,9 +1,9 @@
-﻿namespace Database
+﻿namespace Databases
 {
     public class SQLDatabase : DbContext
     {
-        public SQLDatabase(DbContextOptions<SQLDatabase> options) : base(options) 
-        { 
+        public SQLDatabase(DbContextOptions<SQLDatabase> options) : base(options)
+        {
 
         }
 

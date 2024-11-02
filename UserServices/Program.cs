@@ -2,10 +2,10 @@
 
 var app = builder.Build();
 
-app.Run("locahost:5001/users");
+app.Run("localhost:5001/users");
 
 
-app.MapGet("/{*id}", (string? id, HttpContext context) =>
+app.MapGet("/{*value}", (string? value, HttpContext context) =>
 {
 
 });
@@ -15,12 +15,12 @@ app.MapPost("/", (HttpContext context) =>
 
 });
 
-app.MapPut("/{*id}", (string id, HttpContext context) =>
+app.MapPut("/{value}", (string? value, HttpContext context) =>
 {
 
 });
 
-app.MapDelete("/{*id}", (string id) =>
+app.MapDelete("/{value}", (string? value) =>
 {
 
 });

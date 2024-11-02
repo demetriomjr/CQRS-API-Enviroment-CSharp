@@ -26,8 +26,8 @@ app.MapGet("/token/authorize", ([FromQuery] string username, [FromQuery] string 
     if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Username and Password are required to validate.");
 
-    if (SecurityCenter.Users.Validate(username, password, out Guid userId))
-        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, userId));
+    if (SecurityCenter.Users.Validate(username, password, out Guid userCode))
+        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, userCode));
 
     return Results.Unauthorized();
 });
@@ -45,26 +45,60 @@ app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
     return Results.Ok(SecurityCenter.Tokens.RefreshToken(jwtSettings!, refresToken));
 });
 
+app.MapPost("/users/register", async ([FromBody] User user) =>
+{
+    
+});
+
 //PUBLIC ROUTES
-app.MapGet("/{*path}", (string? path) =>
+app.MapGet("/{*path}", async (string? path) =>
 {
     if (path is null)
         return Results.NotFound();
 
-    return Results.Ok();
+    var result = await Microservices.Get(path);
+
+    if (result is null)
+        return Results.BadRequest();
+
+    return Results.Ok(result);
 }).RequireAuthorization();
 
-app.MapPost("/{*path}", (string? path) =>
+app.MapPost("/{*path}", async (string? path, [FromBody] HttpContent  content) =>
 {
-    return Results.Ok();
+    if (path is null)
+        return Results.NotFound();
+
+    var result = await Microservices.Post(path, content);
+
+    if (result is null)
+        return Results.BadRequest();
+
+    return Results.Ok(result);
 }).RequireAuthorization();
 
-app.MapPut("/{*path}", (string? path) =>
+app.MapPut("/{*path}", async (string? path, [FromBody] HttpContent content) =>
 {
-    return Results.Ok();
+    if (path is null)
+        return Results.NotFound();
+
+    var result = await Microservices.Put(path, content);
+
+    if (result is null)
+        return Results.BadRequest();
+
+    return Results.Ok(result);
 }).RequireAuthorization();
 
-app.MapDelete("/{*path}", (string? path) =>
+app.MapDelete("/{*path}", async (string? path) =>
 {
-    return Results.Ok();
+    if (path is null)
+        return Results.NotFound();
+
+    var result = await Microservices.Delete(path);
+
+    if (result is null)
+        return Results.BadRequest();
+
+    return Results.Ok(result);
 }).RequireAuthorization();

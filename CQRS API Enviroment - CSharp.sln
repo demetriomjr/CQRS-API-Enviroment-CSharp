@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontDoor", "FrontDoor\Fron
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Databases", "Database\Databases.csproj", "{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
 	EndProjectSection
@@ -20,6 +20,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{8A4BB3C9-5EAD-43E5-B8C9-9856A66A7A6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServices", "UserServices\UserServices.csproj", "{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
+		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B} = {F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{99534C78-BE65-4715-8A87-A32FF90DCBBA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

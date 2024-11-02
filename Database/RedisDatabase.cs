@@ -1,4 +1,4 @@
-﻿namespace Database
+﻿namespace Databases
 {
     public class RedisDatabase
     {
