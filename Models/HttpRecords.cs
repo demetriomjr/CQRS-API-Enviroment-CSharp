@@ -1,0 +1,1 @@
+﻿public record UserValidationResponse(bool isValid, Guid userCode, string error);

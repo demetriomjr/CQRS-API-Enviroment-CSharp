@@ -21,13 +21,19 @@ app.UseAuthorization();
 app.Run();
 
 //AUTH ROUTES
-app.MapGet("/token/authorize", ([FromQuery] string username, [FromQuery] string password) =>
+app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] string password) =>
 {
     if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Username and Password are required to validate.");
 
-    if (SecurityCenter.Users.Validate(username, password, out Guid userCode))
-        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, userCode));
+    var result = await Microservices.Get($"/users/validate?=username={username}&password={password}");
+    var validation = await result.ReadFromJsonAsync<UserValidationResponse>();
+
+    if (validation is null)
+        return Results.BadRequest();
+
+    if (validation.isValid)
+        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, validation.userCode));
 
     return Results.Unauthorized();
 });
