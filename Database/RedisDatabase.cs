@@ -1,20 +1,29 @@
-﻿using Models;
-
+﻿
 namespace Databases
 {
-    public class RedisDatabase : DbContext
+    public class RedisDatabase : IDisposable
     {
-        public RedisDatabase(DbContextOptions<RedisDatabase> options) : base(options)
+        private ConnectionMultiplexer _connection;
+        public RedisDatabase(string connectionString)
         {
-            if (options is null)
-                return;
+            try
+            {
+                _connection = ConnectionMultiplexer.Connect(connectionString);
+            }
+            catch 
+            {
+                throw;
+            }
         }
 
-        public DbSet<JwtResponse> BlackListedTokens { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public IDatabase Connect()
         {
-            base.OnModelCreating(modelBuilder);
+            return _connection.GetDatabase();
+        }
+
+        public void Dispose()
+        {
+            _connection.Dispose();
         }
     }
 }
