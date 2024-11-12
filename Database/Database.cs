@@ -11,10 +11,11 @@
             Password = "123321",
             SslMode = MySqlSslMode.None,
         }.ConnectionString;
+        private static readonly string RedisConnectionString = "";
 
         public static SQLDatabase SQL = new(new DbContextOptionsBuilder<SQLDatabase>().UseMySql(SQLConnectionString,
                                                 ServerVersion.AutoDetect(SQLConnectionString)).Options);
-        public static RedisDatabase Redis = new(null!);
+        public static RedisDatabase Redis = new(RedisConnectionString);
         public static MongoDatabase Mongo = new();
     }
 }

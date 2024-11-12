@@ -109,9 +109,54 @@ namespace SecurityHQ
             }  
         }
 
-        private async Task<(bool completed, string error)> UpsertRedisRecord(string userCode, string token)
+        private async Task<(bool completed, string error)> BlackListToken(JwtResponse jwtResponse)
         {
-            
+            try
+            {
+                using (var connection = Database.Redis)
+                {
+                    var db = connection.Connect();
+                    var blackListedToken = await db.StringGetAsync($"blacklist:{jwtResponse.userCode}");
+
+                    if (blackListedToken.HasValue)
+                        return (true, "token already black-listed");
+
+                    await db.HashSetAsync($"blacklist:{jwtResponse.userCode}",
+                    [
+                        new("token", jwtResponse.token),
+                        new("expiry", jwtResponse.expiration.ToString("o"))
+                    ]);
+
+                    await db.KeyExpireAsync(jwtResponse.userCode, jwtResponse.expiration.AddSeconds(90));
+
+                    return (true, string.Empty);
+                }
+            }
+            catch(Exception ex)
+            {
+                if(Debugger.IsAttached) throw;
+                return (false, ex.Message);
+            }
+        }
+
+        private async Task<bool> IsBlackListedToken(string key, string token)
+        {
+            try
+            {
+                using(var connection = Database.Redis)
+                {
+                    var db = connection.Connect();
+                    var readableKey = $"blacklist:{key}";
+                    var reuslt = await db.HashGetAsync(readableKey, "token");
+                    return token.Equals(token);
+                }
+            }
+            catch (Exception)
+            {
+                if(Debugger.IsAttached)
+                    throw;
+                return false;
+            }
         }
     }
 }
