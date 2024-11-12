@@ -1,4 +1,7 @@
-﻿namespace SecurityHQ
+﻿using Microsoft.EntityFrameworkCore;
+using Models;
+
+namespace SecurityHQ
 {
     public class TokenManagement
     {
@@ -36,6 +39,11 @@
                 new JwtSecurityTokenHandler().WriteToken(token),
                 new JwtSecurityTokenHandler().WriteToken(newRefreshToken)
             );
+        }
+
+        public bool IsValidUsageToken(string jwtoken)
+        {
+            return true;
         }
 
         private JwtSecurityToken CreateToken(string userCode, JwtSettings settings, int duration)
@@ -99,6 +107,11 @@
                 error = ex.Message;
                 return null!;
             }  
+        }
+
+        private async Task<(bool completed, string error)> UpsertRedisRecord(string userCode, string token)
+        {
+            
         }
     }
 }

@@ -6,3 +6,4 @@ global using SecurityHQ;
 global using Microsoft.AspNetCore.Mvc;
 global using FrontDoor.ServiceConsumer;
 global using Models.Users;
+global using Models;

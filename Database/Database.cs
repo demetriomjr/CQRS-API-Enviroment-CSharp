@@ -14,7 +14,7 @@
 
         public static SQLDatabase SQL = new(new DbContextOptionsBuilder<SQLDatabase>().UseMySql(SQLConnectionString,
                                                 ServerVersion.AutoDetect(SQLConnectionString)).Options);
-        public static RedisDatabase Redis = new();
+        public static RedisDatabase Redis = new(null!);
         public static MongoDatabase Mongo = new();
     }
 }

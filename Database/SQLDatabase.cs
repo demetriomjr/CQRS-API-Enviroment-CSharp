@@ -1,4 +1,6 @@
-﻿namespace Databases
+﻿using Models;
+
+namespace Databases
 {
     public class SQLDatabase : DbContext
     {
@@ -8,6 +10,8 @@
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<JwtResponse> TokenBlackList { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
