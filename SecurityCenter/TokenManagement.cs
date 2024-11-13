@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models;
-
-namespace SecurityHQ
+﻿namespace SecurityHQ
 {
     public class TokenManagement
     {
         private static readonly int TOKEN_DURATION = 30;
         private static readonly int REFRESH_TOKEN_DURATION = 60 * 12;
+        private JwtSettings _jwtSettings;
+
+        public TokenManagement(JwtSettings jwtSettings)
+        {
+            _jwtSettings = jwtSettings;
+        }
 
         public TokenResponse GenerateToken(JwtSettings settings, Guid userId)
         {
@@ -41,9 +44,23 @@ namespace SecurityHQ
             );
         }
 
-        public bool IsValidUsageToken(string jwtoken)
+        public async Task<(bool valid, string error)> IsValidUsageToken(string jwtoken)
         {
-            return true;
+            string error = string.Empty;
+            try
+            {
+                var userCode = RecoverUserCode(jwtoken, _jwtSettings, out error);
+                if (!string.IsNullOrWhiteSpace(error))
+                    return (false, error);
+                return (await IsBlackListedToken(userCode, jwtoken), error);
+            }
+            catch (Exception ex)
+            {
+                if(Debugger.IsAttached)
+                    throw;
+                error = ex.Message;
+                return (false, error);
+            }
         }
 
         private JwtSecurityToken CreateToken(string userCode, JwtSettings settings, int duration)
@@ -124,10 +141,10 @@ namespace SecurityHQ
                     await db.HashSetAsync($"blacklist:{jwtResponse.userCode}",
                     [
                         new("token", jwtResponse.token),
-                        new("expiry", jwtResponse.expiration.ToString("o"))
+                        new("expiry", jwtResponse.expiry.ToString("o"))
                     ]);
 
-                    await db.KeyExpireAsync(jwtResponse.userCode, jwtResponse.expiration.AddSeconds(90));
+                    await db.KeyExpireAsync(jwtResponse.userCode, jwtResponse.expiry.AddSeconds(90));
 
                     return (true, string.Empty);
                 }

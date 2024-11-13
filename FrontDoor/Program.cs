@@ -33,7 +33,7 @@ app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] s
         return Results.BadRequest();
 
     if (validation.isValid)
-        return Results.Ok(SecurityCenter.Tokens.GenerateToken(jwtSettings!, validation.userCode));
+        return Results.Ok(SecurityCenter.Tokens(jwtSettings!).GenerateToken(jwtSettings!, validation.userId));
 
     return Results.Unauthorized();
 });
@@ -48,7 +48,7 @@ app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
     if (jsonToken is null || jsonToken.ValidTo <= DateTime.UtcNow)
         return Results.Unauthorized();
 
-    return Results.Ok(SecurityCenter.Tokens.RefreshToken(jwtSettings!, refresToken));
+    return Results.Ok(SecurityCenter.Tokens(jwtSettings!).RefreshToken(jwtSettings!, refresToken));
 });
 
 app.MapPost("/users/register", async ([FromBody] User user) =>
