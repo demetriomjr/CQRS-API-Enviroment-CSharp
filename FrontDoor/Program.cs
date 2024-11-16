@@ -33,7 +33,7 @@ var usersQueue = (await channel.QueueDeclareAsync(queue: "users",
 //AUTH ROUTES
 app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] string password) =>
 {
-    if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+    if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Username and Password are required to validate.");
 
     var result = new { };
@@ -51,7 +51,7 @@ app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] s
     return Results.Unauthorized();
 });
 
-app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
+app.MapGet("/token/refresh", ([FromQuery] string refresToken) =>
 {
     if (refresToken is null)
         return Results.BadRequest("No Refresh Token was passed as parameter");
@@ -86,7 +86,7 @@ app.MapGet("/{*path}", async (string? path) =>
     return Results.Ok(result);
 }).RequireAuthorization();
 
-app.MapPost("/{*path}", async (string? path, [FromBody] HttpContent  content) =>
+app.MapPost("/{*path}", async (string? path, [FromBody] HttpContent content) =>
 {
     if (path is null)
         return Results.NotFound();

@@ -9,7 +9,7 @@
 
         public User() : base()
         {
-            
+
         }
 
         public User(string fullName, string username, string password) : base()

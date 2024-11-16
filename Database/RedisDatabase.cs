@@ -10,7 +10,7 @@ namespace Databases
             {
                 _connection = ConnectionMultiplexer.Connect(connectionString);
             }
-            catch 
+            catch
             {
                 throw;
             }
