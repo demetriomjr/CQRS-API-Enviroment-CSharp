@@ -2,11 +2,17 @@
 using var connection = await factory.CreateConnectionAsync();
 using var channel = await connection.CreateChannelAsync();
 
-var queueName = (await channel.QueueDeclareAsync(queue: "users",
+var requestQueue = await channel.QueueDeclareAsync(queue: "users_requests",
                                 durable: false,
                                 exclusive: false,
                                 autoDelete: false,
-                                arguments: null)).QueueName;
+                                arguments: null);
+
+var responseQueue = await channel.QueueDeclareAsync(queue: "users_responses",
+                                durable: false,
+                                exclusive: false,
+                                autoDelete: false,
+                                arguments: null);
 
 
 var consumer = new AsyncEventingBasicConsumer(channel);
