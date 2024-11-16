@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Connections;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -26,7 +24,7 @@ var factory = new ConnectionFactory() { HostName = "localhost" };
 using var connection = await factory.CreateConnectionAsync();
 using var channel = await connection.CreateChannelAsync();
 
-var queueName = (await channel.QueueDeclareAsync(queue: "users",
+var usersQueue = (await channel.QueueDeclareAsync(queue: "users",
                                 durable: false,
                                 exclusive: false,
                                 autoDelete: false,
@@ -38,8 +36,11 @@ app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] s
     if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Username and Password are required to validate.");
 
-    var result = await Microservices.Get($"/users/validate?=username={username}&password={password}");
-    var validation = await result.ReadFromJsonAsync<UserValidationResponse>();
+    var result = new { };
+
+    /*REWORK*/
+    await Task.Delay(1000);
+    var validation = new UserValidationResponse(false, Guid.Empty, string.Empty);
 
     if (validation is null)
         return Results.BadRequest();
@@ -65,7 +66,7 @@ app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
 
 app.MapPost("/users/register", async ([FromBody] User user) =>
 {
-    await Task.Delay(1110);
+    await Task.Delay(100);
     return Results.Forbid();
 });
 
@@ -75,7 +76,9 @@ app.MapGet("/{*path}", async (string? path) =>
     if (path is null)
         return Results.NotFound();
 
-    var result = await Microservices.Get(path);
+    /*REWORK*/
+    await Task.Delay(100);
+    var result = new TokenResponse("", "", "");
 
     if (result is null)
         return Results.BadRequest();
@@ -88,7 +91,9 @@ app.MapPost("/{*path}", async (string? path, [FromBody] HttpContent  content) =>
     if (path is null)
         return Results.NotFound();
 
-    var result = await Microservices.Post(path, content);
+    /*REWORK*/
+    await Task.Delay(100);
+    var result = new TokenResponse("", "", "");
 
     if (result is null)
         return Results.BadRequest();
@@ -101,7 +106,9 @@ app.MapPut("/{*path}", async (string? path, [FromBody] HttpContent content) =>
     if (path is null)
         return Results.BadRequest();
 
-    var result = await Microservices.Put(path, content);
+    /*REWORK*/
+    await Task.Delay(100);
+    var result = new TokenResponse("", "", "");
 
     if (result is null)
         return Results.NotFound("No result returned");
@@ -114,7 +121,9 @@ app.MapDelete("/{*path}", async (string? path) =>
     if (path is null)
         return Results.BadRequest();
 
-    var result = await Microservices.Delete(path);
+    /*REWORK*/
+    await Task.Delay(100);
+    var result = new TokenResponse("", "", "");
 
     if (result is null)
         return Results.NotFound("No result returned");
