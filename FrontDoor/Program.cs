@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore.Connections;
+
+var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties")).AddJsonFile("appsettings.json", false, true);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -19,6 +21,16 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
+
+var factory = new ConnectionFactory() { HostName = "localhost" };
+using var connection = await factory.CreateConnectionAsync();
+using var channel = await connection.CreateChannelAsync();
+
+var queueName = (await channel.QueueDeclareAsync(queue: "users",
+                                durable: false,
+                                exclusive: false,
+                                autoDelete: false,
+                                arguments: null)).QueueName;
 
 //AUTH ROUTES
 app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] string password) =>
