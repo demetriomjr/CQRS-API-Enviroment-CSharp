@@ -1,0 +1,6 @@
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.csproj.AssemblyReference.cache
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.AssemblyInfoInputs.cache
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.AssemblyInfo.cs
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.csproj.CoreCompileInputs.cache
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\UserServices\obj\Debug\net9.0\UserServices.sourcelink.json

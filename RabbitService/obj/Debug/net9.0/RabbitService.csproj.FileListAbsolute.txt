@@ -1,0 +1,6 @@
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.AssemblyInfoInputs.cache
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.AssemblyInfo.cs
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.csproj.CoreCompileInputs.cache
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.sourcelink.json
+C:\Users\dm3o\source\repos\demetriomjr\CQRS-API-Enviroment-CSharp\RabbitService\obj\Debug\net9.0\RabbitService.csproj.AssemblyReference.cache
