@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35417.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontDoor", "FrontDoor\FrontDoor.csproj", "{0D5B047C-610F-4255-88C4-9D1973A75E76}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1} = {7872433A-FF20-4BBE-BD05-33DAF4E68EF1}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}"
 EndProject
@@ -15,20 +12,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Databases", "Database\Datab
 		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityHQ", "SecurityCenter\SecurityHQ.csproj", "{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{8A4BB3C9-5EAD-43E5-B8C9-9856A66A7A6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServices", "UserServices\UserServices.csproj", "{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6BC6116E-8F2E-4E3D-B98F-808F865BDAF7} = {6BC6116E-8F2E-4E3D-B98F-808F865BDAF7}
-		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B} = {F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{99534C78-BE65-4715-8A87-A32FF90DCBBA}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMQ", "UserMQ\UserMQ.csproj", "{80C78EF4-ECC6-478E-B869-1DD7E086AAD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,19 +34,18 @@ Global
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8AE085F-DA39-4CA8-8CF9-FD98D253CF8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7872433A-FF20-4BBE-BD05-33DAF4E68EF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C78EF4-ECC6-478E-B869-1DD7E086AAD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C78EF4-ECC6-478E-B869-1DD7E086AAD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C78EF4-ECC6-478E-B869-1DD7E086AAD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C78EF4-ECC6-478E-B869-1DD7E086AAD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{831198FC-CA1C-4E3D-BA0E-3C3A6317E6E8} = {8A4BB3C9-5EAD-43E5-B8C9-9856A66A7A6F}
+		{80C78EF4-ECC6-478E-B869-1DD7E086AAD0} = {8A4BB3C9-5EAD-43E5-B8C9-9856A66A7A6F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49327F85-0B50-41BC-8BEA-22DC60B04CA7}
 	EndGlobalSection
 EndGlobal

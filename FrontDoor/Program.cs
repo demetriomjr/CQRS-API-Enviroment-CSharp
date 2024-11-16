@@ -33,7 +33,7 @@ app.MapGet("/token/authorize", async ([FromQuery] string username, [FromQuery] s
         return Results.BadRequest();
 
     if (validation.isValid)
-        return Results.Ok(SecurityCenter.Tokens(jwtSettings!).GenerateToken(jwtSettings!, validation.userId));
+        return Results.Ok(/*generate token*/);
 
     return Results.Unauthorized();
 });
@@ -48,12 +48,13 @@ app.MapGet("/token/refresh", ([FromQuery]string refresToken) =>
     if (jsonToken is null || jsonToken.ValidTo <= DateTime.UtcNow)
         return Results.Unauthorized();
 
-    return Results.Ok(SecurityCenter.Tokens(jwtSettings!).RefreshToken(jwtSettings!, refresToken));
+    return Results.Ok(/*REFRESH TOKEN HERE*/);
 });
 
 app.MapPost("/users/register", async ([FromBody] User user) =>
 {
-    
+    await Task.Delay(1110);
+    return Results.Forbid();
 });
 
 //PUBLIC ROUTES
@@ -86,12 +87,12 @@ app.MapPost("/{*path}", async (string? path, [FromBody] HttpContent  content) =>
 app.MapPut("/{*path}", async (string? path, [FromBody] HttpContent content) =>
 {
     if (path is null)
-        return Results.NotFound();
+        return Results.BadRequest();
 
     var result = await Microservices.Put(path, content);
 
     if (result is null)
-        return Results.BadRequest();
+        return Results.NotFound("No result returned");
 
     return Results.Ok(result);
 }).RequireAuthorization();
@@ -99,12 +100,12 @@ app.MapPut("/{*path}", async (string? path, [FromBody] HttpContent content) =>
 app.MapDelete("/{*path}", async (string? path) =>
 {
     if (path is null)
-        return Results.NotFound();
+        return Results.BadRequest();
 
     var result = await Microservices.Delete(path);
 
     if (result is null)
-        return Results.BadRequest();
+        return Results.NotFound("No result returned");
 
     return Results.Ok(result);
 }).RequireAuthorization();
